@@ -26,14 +26,24 @@ namespace TerritoryWars
         public static MenuPool PluginMenuPool { get; } = new RAGENativeUI.MenuPool();
 
         /// <summary>
-        /// property <c>MenuManager</c> is the private storage for a constructed MenuManager
+        /// property <c>MenuManager</c> is the private storage for a constructed MenuManager.
         /// </summary>
         private static Manager MenuManager;
 
         /// <summary>
-        /// property <c>TerritoryManager</c> is the private storage for a constructed TerritoryManager
+        /// property <c>TerritoryManager</c> is the private storage for a constructed TerritoryManager.
         /// </summary>
         private static Manager TerritoryManager;
+
+        /// <summary>
+        /// property <c>FactionManager</c> is the private storage for a constructed FactionManager.
+        /// </summary>
+        private static Manager FactionsManager;
+        
+        /// <summary>
+        /// property <c>GameState</c> is the private storage for the plugin gamestate.
+        /// </summary>
+        private static GameState GameState;
 
         // Methods
 
@@ -56,13 +66,37 @@ namespace TerritoryWars
         }
 
         /// <summary>
+        /// method <c>GetMenuManager</c> returns the property MenuManager.
+        /// </summary>
+        /// <returns>The MenuManager property</returns>
+        public static Manager GetFactionsManager()
+        {
+            return FactionsManager;
+        }
+
+        /// <summary>
+        /// method <c>GetGameState</c> returns the plugin's gamestate object.
+        /// </summary>
+        /// <returns></returns>
+        public static GameState GetGameState()
+        {
+            return GameState;
+        }
+
+        /// <summary>
         /// method <c>InitializeTerritoriesManager</c> will construct a new territory manager then handle all its start up requirements.
         /// </summary>
         public static void InitializeTerritoriesManager()
         {
             TerritoryManager = new Territories.TerritoriesManager();
-            Territories.TerritoriesManager TerritoriesManager = (Territories.TerritoriesManager)TerritoryManager;
-            TerritoriesManager.CreateTerritories();
+        }
+
+        /// <summary>
+        /// method <c>InitializeTerritoriesManager</c> will construct a new territory manager then handle all its start up requirements.
+        /// </summary>
+        public static void InitializeFactionsManager()
+        {
+            FactionsManager = new Factions.FactionsManager();
         }
 
         /// <summary>
@@ -74,12 +108,24 @@ namespace TerritoryWars
         }
 
         /// <summary>
+        /// method <c>InitializeGameState</c> will construct the plugins game state. Hard coded to be Territory Wars.
+        /// </summary>
+        public static void InitializeGameState()
+        {
+            GameState = new States.TerritoryWar();
+        }
+
+        /// <summary>
         /// method <c>Main</c> is the Main method for the Territory Wars plugin.
         /// </summary>
         public static void Main()
         {
+            InitializeGameState();
             InitializeTerritoriesManager();
+            InitializeFactionsManager();
             InitializeMenuManager();
+
+            GetGameState().InitializeGame();
 
             while (true)
             {
@@ -87,6 +133,10 @@ namespace TerritoryWars
                 if (MenuManager != null)
                 {
                     MenuManager.Tick();
+                }
+                if (FactionsManager != null)
+                {
+                    FactionsManager.Tick();
                 }
                 if (TerritoryManager != null)
                 {
@@ -119,6 +169,25 @@ namespace TerritoryWars
         /// method <c>Factory</c> constructor.
         /// </summary>
         public Factory() : base()
+        {
+
+        }
+    }
+
+    /// <summary>
+    /// class <c>GameState</c> is the base class for GameStates.
+    /// </summary>
+    public class GameState : TWClass
+    {
+        public GameState() : base()
+        {
+
+        }
+
+        /// <summary>
+        /// method <c>InitializeGame</c> is a virtual function for initilizing game state games.
+        /// </summary>
+        public virtual void InitializeGame()
         {
 
         }

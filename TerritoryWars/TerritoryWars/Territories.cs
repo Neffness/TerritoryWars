@@ -1,9 +1,54 @@
 ﻿namespace TerritoryWars.Territories
 {
+    using System;
     using System.Collections;
     using System.Collections.Generic;
     using System.Drawing;
     using Rage;
+
+    /// <summary>
+    /// struct <c>TerritoryData</c> used for containing territory data.
+    /// </summary>
+    public struct TerritoryData
+    {
+        /// <summary>
+        /// method <c>TerritoryData</c> constructory.
+        /// </summary>
+        /// <param name="TerritoryName"></param>
+        /// <param name="TerritoryLocation"></param>
+        /// <param name="TerritoryColor"></param>
+        public TerritoryData(Factions.Factions FactionOwner, Vector3 TerritoryLocation, Color TerritoryColor)
+        {
+            Faction = FactionOwner;
+            Location = TerritoryLocation;
+            Color = TerritoryColor;
+        }
+
+        // Properties
+
+        /// <summary>
+        /// property <c>Name</c> is used to store the name of a territory.
+        /// </summary>
+        public Factions.Factions Faction { get; }
+
+        /// <summary>
+        /// property <c>Location</c> is used to store the world vector3 location of a territory.
+        /// </summary>
+        public Vector3 Location { get; }
+
+        /// <summary>
+        /// property <c>Color</c> is used to store the Rage.Color of a territory.
+        /// </summary>
+        public Color Color { get; }
+
+        // Methods
+
+        /// <summary>
+        /// method <c>ToString</c> is used to generate a string repersentation of the struct.
+        /// </summary>
+        /// <returns>string repersentation of the struct</returns>
+        public override string ToString() => $"({Faction}, {Location}, {Color})";
+    }
 
     /// <summary>
     /// class <c>TerritoriesManager</c> is the singleton manager for territories for the plugin.
@@ -68,15 +113,6 @@
         private void InitializeTerritoriesContainer()
         {
             Territories = new Dictionary<string, Territory>();
-        }
-
-        /// <summary>
-        /// method <c>CreateTerritories</c> will call to the factory to create territories.
-        /// </summary>
-        public void CreateTerritories()
-        {
-            RemoveAllTerritoryBlips("");
-            GetTerritoriesFactory().CreateTerritories();
         }
 
         /// <summary>
@@ -186,55 +222,13 @@
                 TerritoryObj.DeactivateBlip();
             }
         }
-    }
 
-    /// <summary>
-    /// struct <c>TerritoryData</c> used for containing territory data.
-    /// </summary>
-    public struct TerritoryData
-    {
-        /// <summary>
-        /// method <c>TerritoryData</c> constructory.
-        /// </summary>
-        /// <param name="TerritoryName"></param>
-        /// <param name="TerritoryLocation"></param>
-        /// <param name="TerritoryColor"></param>
-        public TerritoryData(string TerritoryName, Vector3 TerritoryLocation, Color TerritoryColor)
+        public void ClaimTerritoryForFaction(Vector3 ClaimedLocation, Factions.FactionData FactionData)
         {
-            if (string.IsNullOrEmpty(TerritoryName))
-            {
-                throw new System.ArgumentException("message", nameof(TerritoryName));
-            }
-
-            Name = TerritoryName;
-            Location = TerritoryLocation;
-            Color = TerritoryColor;
+            TerritoryData NewTerritoryData = new TerritoryData(FactionData.Faction, ClaimedLocation, FactionData.TerritoryColor);
+            Territory NewTerritory = GetTerritoriesFactory().CreateTerritory(NewTerritoryData);
+            Territories.Add(FactionData.Faction.ToString(), NewTerritory);
         }
-
-        // Properties
-
-        /// <summary>
-        /// property <c>Name</c> is used to store the name of a territory.
-        /// </summary>
-        public string Name { get; }
-
-        /// <summary>
-        /// property <c>Location</c> is used to store the world vector3 location of a territory.
-        /// </summary>
-        public Vector3 Location { get; }
-
-        /// <summary>
-        /// property <c>Color</c> is used to store the Rage.Color of a territory.
-        /// </summary>
-        public Color Color { get; }
-
-        // Methods
-
-        /// <summary>
-        /// method <c>ToString</c> is used to generate a string repersentation of the struct.
-        /// </summary>
-        /// <returns>string repersentation of the struct</returns>
-        public override string ToString() => $"({Name}, {Location}, {Color})";
     }
 
     /// <summary>
@@ -247,8 +241,8 @@
         /// </summary>
         public TerritoryFactory() : base()
         {
-            TerritoriesToCreate.Add(new TerritoryData("Territory1", new Vector3(649.8077f, -8.154874f, 82.40269f), Color.Blue));
-            TerritoriesToCreate.Add(new TerritoryData("Territory2", new Vector3(451.7062f, -993.2839f, 30.6896f), Color.Green));
+            //TerritoriesToCreate.Add(new TerritoryData("Territory1", new Vector3(649.8077f, -8.154874f, 82.40269f), Color.Blue));
+            //TerritoriesToCreate.Add(new TerritoryData("Territory2", new Vector3(451.7062f, -993.2839f, 30.6896f), Color.Green));
         }
 
         // Properties
@@ -259,7 +253,7 @@
         public List<TerritoryData> TerritoriesToCreate = new List<TerritoryData>();
 
         // Methods
-
+        
         /// <summary>
         /// method <c>CreateTerritory</c> creates a territory object.
         /// </summary>
@@ -284,7 +278,7 @@
                     Territory NewTerritory = CreateTerritory(TerritoriesToCreate[i]);
                     if (NewTerritory != null)
                     {
-                        TerritoryManager.Territories.Add(TerritoriesToCreate[i].Name, NewTerritory);
+                        TerritoryManager.Territories.Add(TerritoriesToCreate[i].Faction, NewTerritory);
                     }
                 }
             }
@@ -383,7 +377,7 @@
                 }
             }
             Blip NewBlip = new Blip(Data.Location);
-            NewBlip.Name = Data.Name;
+            NewBlip.Name = Data.Faction.ToString();
             NewBlip.Order = 0;
             NewBlip.Color = Data.Color;
             NewBlip.Scale = 10.0f;
