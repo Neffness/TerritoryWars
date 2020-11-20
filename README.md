@@ -1,2 +1,2 @@
 # TerritoryWars
-GTA 5 Rage Plugin LSDPFR Plugin
+GTA 5 Rage LSDPFR Plugin
