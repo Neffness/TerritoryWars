@@ -22,7 +22,7 @@
         public MenuManager() : base()
         {
             MenuFactory = new Menus.MenuFactory();
-            MainMenu = (Menus.TerritoryWarsMainMenu)MenuFactory.Menus[Plugin.MainMenuName];
+            MainMenu = (Menus.TerritoryWarsMainMenu)MenuFactory.Menus["Main"];
         }
 
         public static MenuManager Instance
@@ -73,7 +73,7 @@
 
         public void CreateMenus()
         {
-            Menus.Add(Plugin.MainMenuName, MainMenu);
+            Menus.Add("Main", MainMenu);
         }
     }
 
@@ -85,7 +85,7 @@
 
         private Menus.TerritoriesMenu TerritoryMenu = new Menus.TerritoriesMenu();
 
-        public TerritoryWarsMainMenu() : base(SubMenuTitle(Plugin.MainMenuName))
+        public TerritoryWarsMainMenu() : base(SubMenuTitle("Main"))
         {
             Manager PluginTerritoryManager = Plugin.TerritoryManager;
             Territories.TerritoriesManager TerritoryManager = (Territories.TerritoriesManager)PluginTerritoryManager;
@@ -97,7 +97,7 @@
 
     class TerritoriesMenu : BaseMenu
     {
-        public TerritoriesMenu() : base(SubMenuTitle(Plugin.LocationDetailsMenuName))
+        public TerritoriesMenu() : base(SubMenuTitle("Territories"))
         {
         }
 
@@ -121,7 +121,7 @@
 
     class BaseMenu : UIMenu
     {
-        public static string SubMenuTitle(string title) => $"{Plugin.MenuTitleSuffix}: {title}";
+        public static string SubMenuTitle(string title) => $"{"Menu"}: {title}";
 
         public BaseMenu(string title) : base(Plugin.Name, title)
         {

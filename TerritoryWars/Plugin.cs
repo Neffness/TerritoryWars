@@ -2,37 +2,26 @@
 
 namespace TerritoryWars
 {
-    using Rage;
-    using RAGENativeUI;
-
     public delegate void FiberDelegate_NoParams();
 
     public class Plugin
     {
-        // String Properties
-            // Plugin Name
+        // Plugin Name
         public const string Name = "Territory Wars";
-            // Menus
-        public const string MenuTitleSuffix = "Menu";
-        public const string MainMenuName = "Main";
-        public const string LocationDetailsMenuName = "Location Details";
 
         // Menu Threading
-        private static MenuPool _PluginMenuPool { get; } = new MenuPool();
-        public static MenuPool PluginMenuPool
+        private static RAGENativeUI.MenuPool _PluginMenuPool { get; } = new RAGENativeUI.MenuPool();
+        public static RAGENativeUI.MenuPool PluginMenuPool
         {
             get { return _PluginMenuPool; }
         }
 
-        // Managers
-            // Menu Manager
         private static Manager _MenuManager;
         public static Manager MenuManager
         {
             get { return _MenuManager; }
         }
 
-            // Territory Manager
         private static Manager _TerritoryManager;
         public static Manager TerritoryManager
         {
@@ -47,7 +36,7 @@ namespace TerritoryWars
 
             while (true)
             {
-                GameFiber.Yield();
+                Rage.GameFiber.Yield();
                 if (MenuManager != null)
                 {
                     MenuManager.Tick();
@@ -87,13 +76,13 @@ namespace TerritoryWars
         {
         }
 
-        public GameFiber StartNewFiber(int Delay, FiberDelegate_NoParams FiberDelegate)
+        public Rage.GameFiber StartNewFiber(int Delay, FiberDelegate_NoParams FiberDelegate)
         {
-            GameFiber NewFiber = GameFiber.StartNew(delegate
+            Rage.GameFiber NewFiber = Rage.GameFiber.StartNew(delegate
             {
                 while (true)
                 {
-                    GameFiber.Wait(Delay);
+                    Rage.GameFiber.Wait(Delay);
                     FiberDelegate();
                 }
             });

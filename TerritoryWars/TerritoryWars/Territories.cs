@@ -108,6 +108,11 @@
 
         public void RemoveTerritoryBlip(string TerritoryName)
         {
+            if (string.IsNullOrEmpty(TerritoryName))
+            {
+                throw new System.ArgumentException("message", nameof(TerritoryName));
+            }
+
             foreach (DictionaryEntry Enumerator in Territories)
             {
                 if ((string)Enumerator.Key == TerritoryName)
@@ -141,6 +146,11 @@
     {
         public TerritoryData(string TerritoryName, Vector3 TerritoryLocation, Color TerritoryColor)
         {
+            if (string.IsNullOrEmpty(TerritoryName))
+            {
+                throw new System.ArgumentException("message", nameof(TerritoryName));
+            }
+
             Name = TerritoryName;
             Location = TerritoryLocation;
             Color = TerritoryColor;
