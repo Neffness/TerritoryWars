@@ -10,19 +10,34 @@
     public delegate void Delegate_NoParams();
     public delegate void Delegate_OneStrParam(string String);
 
-    class MenuManager : Manager
+    sealed class MenuManager : Manager
     {
-        // Properties
+        private static MenuManager instance = null;
+        private static readonly object padlock = new object();
+
         private static MenuFactory MenuFactory;
 
-        // Menus
         public Menus.TerritoryWarsMainMenu MainMenu;
 
-        // Constructor
         public MenuManager() : base()
         {
             MenuFactory = new Menus.MenuFactory();
             MainMenu = (Menus.TerritoryWarsMainMenu)MenuFactory.Menus[Plugin.MainMenuName];
+        }
+
+        public static MenuManager Instance
+        {
+            get
+            {
+                lock (padlock)
+                {
+                    if (instance == null)
+                    {
+                        instance = new MenuManager();
+                    }
+                    return instance;
+                }
+            }
         }
 
         // Tick
@@ -47,10 +62,8 @@
 
     class MenuFactory : Factory
     {
-        // Public Properties
         public static Dictionary<string, UIMenu> Menus = new Dictionary<string, UIMenu>();
 
-        // Private Properties
         private static Menus.TerritoryWarsMainMenu MainMenu = new Menus.TerritoryWarsMainMenu();
 
         public MenuFactory() : base()
@@ -66,15 +79,12 @@
 
     class TerritoryWarsMainMenu : BaseMenu
     {
-        // Public Propertiess
         public const string ShowBlipsName = "Show Territory Blips";
         public const string ClearBlipsName = "Clear Territory Blips";
         public const string TerritoriesName = "Territories";
 
-        // Menus
         private Menus.TerritoriesMenu TerritoryMenu = new Menus.TerritoriesMenu();
 
-        // Constructor
         public TerritoryWarsMainMenu() : base(SubMenuTitle(Plugin.MainMenuName))
         {
             Manager PluginTerritoryManager = Plugin.TerritoryManager;

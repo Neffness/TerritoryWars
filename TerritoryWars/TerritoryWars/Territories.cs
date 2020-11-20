@@ -5,22 +5,40 @@
     using System.Drawing;
     using Rage;
 
-    class TerritoriesManager : Manager
+    sealed class TerritoriesManager : Manager
     {
-        // Public Properties
+        private static TerritoriesManager instance = null;
+        private static readonly object padlock = new object();
+
         public IDictionary Territories;
 
-        private static TerritoryFactory _TerritoriesFactory;
-        public TerritoryFactory TerritoriesFactory
+        private static TerritoryFactory TerritoriesFactory;
+
+        public TerritoryFactory GetTerritoriesFactory()
         {
-            get { return _TerritoriesFactory; }
+            return TerritoriesFactory;
         }
 
         public TerritoriesManager() : base()
         {
             InitializeTerritoriesContainer();
-            _TerritoriesFactory = new TerritoryFactory();
+            TerritoriesFactory = new TerritoryFactory();
             CreateTerritories();
+        }
+
+        public static TerritoriesManager Instance
+        {
+            get
+            {
+                lock (padlock)
+                {
+                    if (instance == null)
+                    {
+                        instance = new TerritoriesManager();
+                    }
+                    return instance;
+                }
+            }
         }
 
         private void InitializeTerritoriesContainer()
@@ -30,12 +48,12 @@
 
         public void CreateTerritories()
         {
-            if (TerritoriesFactory != null)
+            if (GetTerritoriesFactory() != null)
             {
-                for (int i = 0; i < TerritoriesFactory.TerritoriesToCreate.Count; i++)
+                for (int i = 0; i < GetTerritoriesFactory().TerritoriesToCreate.Count; i++)
                 {
-                    TerritoryData CurrentTerritoryData = TerritoriesFactory.TerritoriesToCreate[i];
-                    Territory NewTerritory = TerritoriesFactory.CreateTerritory(CurrentTerritoryData);
+                    TerritoryData CurrentTerritoryData = GetTerritoriesFactory().TerritoriesToCreate[i];
+                    Territory NewTerritory = GetTerritoriesFactory().CreateTerritory(CurrentTerritoryData);
                     Territories.Add(CurrentTerritoryData.Name, NewTerritory);
                 }
             }
