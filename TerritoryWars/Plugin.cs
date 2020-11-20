@@ -56,12 +56,30 @@ namespace TerritoryWars
         }
 
         /// <summary>
+        /// method <c>InitializeTerritoriesManager</c> will construct a new territory manager then handle all its start up requirements.
+        /// </summary>
+        public static void InitializeTerritoriesManager()
+        {
+            TerritoryManager = new Territories.TerritoriesManager();
+            Territories.TerritoriesManager TerritoriesManager = (Territories.TerritoriesManager)TerritoryManager;
+            TerritoriesManager.CreateTerritories();
+        }
+
+        /// <summary>
+        /// method <c>InitializeMenuManager</c> will construct a new menu manager then handle all its start up requirements.
+        /// </summary>
+        public static void InitializeMenuManager()
+        {
+            MenuManager = new Menus.MenuManager();
+        }
+
+        /// <summary>
         /// method <c>Main</c> is the Main method for the Territory Wars plugin.
         /// </summary>
         public static void Main()
         {
-            TerritoryManager = new Territories.TerritoriesManager();
-            MenuManager = new Menus.MenuManager();
+            InitializeTerritoriesManager();
+            InitializeMenuManager();
 
             while (true)
             {

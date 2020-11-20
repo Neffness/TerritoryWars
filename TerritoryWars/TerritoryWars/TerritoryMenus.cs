@@ -79,11 +79,18 @@
         /// </summary>
         private void CheckKeyBinds()
         {
-            if (Game.IsKeyDown(Keys.F5))
+            if (Game.IsKeyDown(Keys.F7))
             {
                 if (MainMenu != null)
                 {
-                    MainMenu.Visible = true;
+                    if (MainMenu.Visible)
+                    {
+                        MainMenu.Visible = false;
+                    }
+                    else
+                    {
+                        MainMenu.Visible = true;
+                    }
                 }
             }
         }
