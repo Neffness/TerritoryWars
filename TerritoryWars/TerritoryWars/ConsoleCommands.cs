@@ -13,16 +13,14 @@
         [Rage.Attributes.ConsoleCommand]
         public static void Command_ClearAllTerritories()
         {
-            Manager PluginTerritoryManager = Plugin.TerritoryManager;
-            Territories.TerritoriesManager TerritoryManager = (Territories.TerritoriesManager)PluginTerritoryManager;
+            Territories.TerritoriesManager TerritoryManager = (Territories.TerritoriesManager)Plugin.GetTerritoryManager();
             TerritoryManager.DestroyTerritories();
         }
 
         [Rage.Attributes.ConsoleCommand]
         public static void Command_ShowMenu()
         {
-            Manager PluginManager = Plugin.MenuManager;
-            Menus.MenuManager MenuManager = (Menus.MenuManager)PluginManager;
+            Menus.MenuManager MenuManager = (Menus.MenuManager)Plugin.GetMenuManager();
             MenuManager.MainMenu.Visible = true;
         }
     }
