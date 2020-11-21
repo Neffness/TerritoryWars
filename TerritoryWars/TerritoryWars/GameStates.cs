@@ -35,12 +35,18 @@
 
         // Methods
 
+        /// <summary>
+        /// property <c>InitializeGame</c> overrides base class function.
+        /// </summary>
         public override void InitializeGame()
         {
             base.InitializeGame();
             InitializeFactionsManager();
         }
 
+        /// <summary>
+        /// method <c>InitializeFactionsManager</c> initializes the plugins FactionsManager.
+        /// </summary>
         private void InitializeFactionsManager()
         {
             ((Factions.FactionsManager)Plugin.GetFactionsManager()).CreateFactions();

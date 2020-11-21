@@ -112,7 +112,7 @@
         /// </summary>
         private void InitializeTerritoriesContainer()
         {
-            Territories = new Dictionary<string, Territory>();
+            Territories = new Dictionary<string, List<Territory>>();
         }
 
         /// <summary>
@@ -147,8 +147,11 @@
                 string Name = (string)Enumerator.Key;
                 if (Name == TerritoryName)
                 {
-                    Territory TerritoryObj = (Territory)Enumerator.Value;
-                    TerritoryObj.ToggleBlip();
+                    List<Territory> TerritoryObjs = (List<Territory>)Enumerator.Value;
+                    for (var i = 0; i < TerritoryObjs.Count; i++)
+                    {
+                        TerritoryObjs[i].ToggleBlip();
+                    }
                     break;
                 }
             }
@@ -169,8 +172,12 @@
             {
                 if ((string)Enumerator.Key == TerritoryName)
                 {
-                    ((Territory)Enumerator.Value).DeactivateBlip();
-                    ((Territory)Enumerator.Value).ActivateBlip();
+                    List<Territory> TerritoryObjs = (List<Territory>)Enumerator.Value;
+                    foreach (Territory T in TerritoryObjs)
+                    {
+                        T.DeactivateBlip();
+                        T.ActivateBlip();
+                    }
                     break;
                 }
             }
@@ -191,7 +198,11 @@
             {
                 if ((string)Enumerator.Key == TerritoryName)
                 {
-                    ((Territory)Enumerator.Value).DeactivateBlip();
+                    List<Territory> TerritoryObjs = (List<Territory>)Enumerator.Value;
+                    foreach (Territory T in TerritoryObjs)
+                    {
+                        T.DeactivateBlip();
+                    }
                     break;
                 }
             }
@@ -205,8 +216,11 @@
         {
             foreach (DictionaryEntry Enumerator in Territories)
             {
-                Territory TerritoryObj = (Territory)Enumerator.Value;
-                TerritoryObj.ActivateBlip();
+                List<Territory> TerritoryObjs = (List<Territory>)Enumerator.Value;
+                foreach (Territory T in TerritoryObjs)
+                {
+                    T.ActivateBlip();
+                }
             }
         }
 
@@ -218,16 +232,31 @@
         {
             foreach (DictionaryEntry Enumerator in Territories)
             {
-                Territory TerritoryObj = (Territory)Enumerator.Value;
-                TerritoryObj.DeactivateBlip();
+                List<Territory> TerritoryObjs = (List<Territory>)Enumerator.Value;
+                foreach (Territory T in TerritoryObjs)
+                {
+                    T.DeactivateBlip();
+                }
             }
         }
 
         public void ClaimTerritoryForFaction(Vector3 ClaimedLocation, Factions.FactionData FactionData)
         {
+            string FactionName = FactionData.Faction.ToString();
             TerritoryData NewTerritoryData = new TerritoryData(FactionData.Faction, ClaimedLocation, FactionData.TerritoryColor);
             Territory NewTerritory = GetTerritoriesFactory().CreateTerritory(NewTerritoryData);
-            Territories.Add(FactionData.Faction.ToString(), NewTerritory);
+            if (!Territories.Contains(FactionName))
+            {
+                List<Territory> NewTerritories = new List<Territory>();
+                NewTerritories.Add(NewTerritory);
+                Territories.Add(FactionName, NewTerritories);
+            }
+            else
+            {
+                ((List<Territory>)Territories[FactionName]).Add(NewTerritory);
+            }
+            
+            
         }
     }
 

@@ -58,73 +58,91 @@
         {
             Faction = NewFaction;
             Territories = new List<Territories.TerritoryData>();
+
+            // I use this switch statement as a means to set up factions. It's ugly and I don't care right now.
             switch (Faction)
             {
                 case Factions.ArmenianMob:
                     TerritoryColor = Color.Yellow;
                     Headquarters = new Territories.TerritoryData(Faction, new Vector3(), TerritoryColor);
+                    Territories.Add(Headquarters);
                     break;
                 case Factions.Ballas:
                     TerritoryColor = Color.Purple;
                     Headquarters = new Territories.TerritoryData(Faction, new Vector3(), TerritoryColor);
+                    Territories.Add(Headquarters);
                     break;
                 case Factions.FIB:
                     TerritoryColor = Color.Brown;
                     Headquarters = new Territories.TerritoryData(Faction, new Vector3(), TerritoryColor);
+                    Territories.Add(Headquarters);
                     break;
                 case Factions.GambettiCrimeFamily:
                     TerritoryColor = Color.Maroon;
                     Headquarters = new Territories.TerritoryData(Faction, new Vector3(), TerritoryColor);
+                    Territories.Add(Headquarters);
                     break;
                 case Factions.Hippies:
                     TerritoryColor = Color.Green;
                     Headquarters = new Territories.TerritoryData(Faction, new Vector3(), TerritoryColor);
+                    Territories.Add(Headquarters);
                     break;
                 case Factions.Kkangpae:
                     TerritoryColor = Color.Red;
                     Headquarters = new Territories.TerritoryData(Faction, new Vector3(), TerritoryColor);
+                    Territories.Add(Headquarters);
                     break;
                 case Factions.LosSantosTriads:
                     TerritoryColor = Color.DarkRed;
                     Headquarters = new Territories.TerritoryData(Faction, new Vector3(), TerritoryColor);
+                    Territories.Add(Headquarters);
                     break;
                 case Factions.LosSantosVagos:
                     TerritoryColor = Color.Orange;
                     Headquarters = new Territories.TerritoryData(Faction, new Vector3(), TerritoryColor);
+                    Territories.Add(Headquarters);
                     break;
                 case Factions.MadrazoCartel:
                     TerritoryColor = Color.ForestGreen;
                     Headquarters = new Territories.TerritoryData(Faction, new Vector3(), TerritoryColor);
+                    Territories.Add(Headquarters);
                     break;
                 case Factions.MarabuntaGrande:
                     TerritoryColor = Color.Blue;
                     Headquarters = new Territories.TerritoryData(Faction, new Vector3(), TerritoryColor);
+                    Territories.Add(Headquarters);
                     break;
                 case Factions.Military:
                     TerritoryColor = Color.Olive;
                     Headquarters = new Territories.TerritoryData(Faction, new Vector3(), TerritoryColor);
+                    Territories.Add(Headquarters);
                     break;
                 case Factions.ONeilBrothers:
                     TerritoryColor = Color.CadetBlue;
                     Headquarters = new Territories.TerritoryData(Faction, new Vector3(), TerritoryColor);
+                    Territories.Add(Headquarters);
                     break;
                 case Factions.Police:
                     TerritoryColor = Color.DodgerBlue;
                     Headquarters = new Territories.TerritoryData(Faction, new Vector3(451.7062f, -993.2839f, 30.6896f), TerritoryColor);
+                    Territories.Add(Headquarters);
                     // Other stations
                     Territories.Add(new Territories.TerritoryData(Faction, new Vector3(649.8077f, -8.154874f, 82.40269f), TerritoryColor));
                     break;
                 case Factions.Rednecks:
                     TerritoryColor = Color.IndianRed;
                     Headquarters = new Territories.TerritoryData(Faction, new Vector3(), TerritoryColor);
+                    Territories.Add(Headquarters);
                     break;
                 case Factions.TheLostMC:
                     TerritoryColor = Color.Black;
                     Headquarters = new Territories.TerritoryData(Faction, new Vector3(), TerritoryColor);
+                    Territories.Add(Headquarters);
                     break;
                 case Factions.VarriosLosAztecas:
                     TerritoryColor = Color.SeaGreen;
                     Headquarters = new Territories.TerritoryData(Faction, new Vector3(), TerritoryColor);
+                    Territories.Add(Headquarters);
                     break;
                 default:
                     TerritoryColor = Color.White;
@@ -265,6 +283,10 @@
             return NewFaction;
         }
 
+        /// <summary>
+        /// method <c>CreateFactions</c> will create all the factions listed in the Factions enum.
+        /// </summary>
+        /// <returns></returns>
         public List<FactionData> CreateFactions()
         {
             List<FactionData> Factions = new List<FactionData>();
@@ -322,6 +344,10 @@
             return Influence;
         }
 
+        /// <summary>
+        /// method <c>ClaimTerritory</c> will claim territory for a faction, creating the territories in game.
+        /// </summary>
+        /// <param name="ClaimedLocation"></param>
         public void ClaimTerritory(Vector3 ClaimedLocation)
         {
             ((Territories.TerritoriesManager)Plugin.GetTerritoryManager()).ClaimTerritoryForFaction(ClaimedLocation, Data);
