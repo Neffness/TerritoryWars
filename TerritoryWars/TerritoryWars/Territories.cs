@@ -14,14 +14,16 @@
         /// <summary>
         /// method <c>TerritoryData</c> constructory.
         /// </summary>
-        /// <param name="TerritoryName"></param>
+        /// <param name="FactionOwner"></param>
         /// <param name="TerritoryLocation"></param>
         /// <param name="TerritoryColor"></param>
-        public TerritoryData(Factions.Factions FactionOwner, Vector3 TerritoryLocation, Color TerritoryColor)
+        /// <param name="Influence"></param>
+        public TerritoryData(Factions.Factions FactionOwner, Vector3 TerritoryLocation, Color TerritoryColor, float Influence = 1.0f)
         {
             Faction = FactionOwner;
             Location = TerritoryLocation;
             Color = TerritoryColor;
+            InitialInfluence = Influence;
         }
 
         // Properties
@@ -40,6 +42,11 @@
         /// property <c>Color</c> is used to store the Rage.Color of a territory.
         /// </summary>
         public Color Color { get; }
+
+        /// <summary>
+        /// property <c_>InitialInfluence</c_> is the float that will be used when creating a territory for the first time.
+        /// </summary>
+        public float InitialInfluence { get; }
 
         // Methods
 
@@ -240,10 +247,13 @@
             }
         }
 
-        public void ClaimTerritoryForFaction(Vector3 ClaimedLocation, Factions.FactionData FactionData)
+        /// <summary>
+        /// method <c>CreateFactionTerritory</c> is used by ClaimTerritoryForFaction so that the actual teritory can be created.
+        /// </summary>
+        /// <param name="FactionName"></param>
+        /// <param name="NewTerritoryData"></param>
+        private void CreateFactionTerritory(string FactionName, TerritoryData NewTerritoryData)
         {
-            string FactionName = FactionData.Faction.ToString();
-            TerritoryData NewTerritoryData = new TerritoryData(FactionData.Faction, ClaimedLocation, FactionData.TerritoryColor);
             Territory NewTerritory = GetTerritoriesFactory().CreateTerritory(NewTerritoryData);
             if (!Territories.Contains(FactionName))
             {
@@ -255,8 +265,31 @@
             {
                 ((List<Territory>)Territories[FactionName]).Add(NewTerritory);
             }
-            
-            
+        }
+
+        /// <summary>
+        /// method <c>ClaimTerritoryForFaction</c> claims territory for a faction. This is how a territory gets added to the territory manager.
+        ///     First it looks up all territories owned by the faction. If the locations match exactly, the TerritoryData reference from the FactionData is used.
+        ///     If no such location is found, the territory will be created for the faction at the location.
+        ///     WIP - The idea for the dynamic creation of non owned territories is so the game state can allow for the creation of territories.
+        ///         This feature is a wip and commented out.
+        /// </summary>
+        /// <param name="ClaimedLocation"></param>
+        /// <param name="ClaimingFactionData"></param>
+        public void ClaimTerritoryForFaction(Vector3 ClaimedLocation, Factions.FactionData ClaimingFactionData)
+        {
+            string FactionName = ClaimingFactionData.Faction.ToString();
+            List<TerritoryData> FactionTerritories = ClaimingFactionData.Territories;
+            for (var i = 0; i < FactionTerritories.Count; i++)
+            {
+                TerritoryData FactionsTerritoryData = FactionTerritories[i];
+                if (FactionsTerritoryData.Location == ClaimedLocation)
+                {
+                    CreateFactionTerritory(FactionName, FactionsTerritoryData);
+                    return;
+                }
+            }
+            //CreateFactionTerritory(FactionName, new TerritoryData(ClaimingFactionData.Faction, ClaimedLocation, ClaimingFactionData.TerritoryColor));
         }
     }
 
@@ -290,26 +323,8 @@
         public Territory CreateTerritory(TerritoryData NewTerritoryData)
         {
             Territory NewTerritory = new Territory(NewTerritoryData);
+            NewTerritory.IncreaseInfluence(NewTerritoryData.InitialInfluence);
             return NewTerritory;
-        }
-
-        /// <summary>
-        /// method <c>CreateTerritories</c> will create all the territories in the TerritoriesToCreate list.
-        /// </summary>
-        public void CreateTerritories()
-        {
-            Territories.TerritoriesManager TerritoryManager = (Territories.TerritoriesManager)Plugin.GetTerritoryManager();
-            if (TerritoryManager != null)
-            {
-                for (int i = 0; i < TerritoriesToCreate.Count; i++)
-                {
-                    Territory NewTerritory = CreateTerritory(TerritoriesToCreate[i]);
-                    if (NewTerritory != null)
-                    {
-                        TerritoryManager.Territories.Add(TerritoriesToCreate[i].Faction, NewTerritory);
-                    }
-                }
-            }
         }
     }
 
@@ -338,7 +353,7 @@
         /// <summary>
         /// property <c>Influence</c> is the current influnce of the territory. This is a value used to determine the strength of the territory over the area of the world it covers.
         /// </summary>
-        private float Influence = 10.0f;
+        private float Influence = 0.0f; // 1.0f is roughly the size of a city block.
 
         /// <summary>
         /// method <c>ActiveBlip</c> holds a reference to the territory blip, should it have one.
@@ -405,10 +420,10 @@
                 }
             }
             Blip NewBlip = new Blip(Data.Location);
-            NewBlip.Name = Data.Faction.ToString();
+            NewBlip.Name = Data.Faction.ToString() + " Territory";
             NewBlip.Order = 0;
             NewBlip.Color = Data.Color;
-            NewBlip.Scale = 10.0f;
+            NewBlip.Scale = GetInfluence();
             NewBlip.Alpha = 0.2f;
             ActiveBlip = NewBlip;
         }
