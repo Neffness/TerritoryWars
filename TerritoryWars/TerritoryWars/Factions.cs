@@ -72,7 +72,7 @@
     public struct FactionData
     {
         /// <summary>
-        /// method <c>Factiondata</c> constructor.
+        /// method <c>FactionData</c> constructor.
         /// </summary>
         /// <param name="NewFaction"></param>
         public FactionData(Factions NewFaction)
@@ -114,8 +114,9 @@
                 case Factions.Hippies:
                     FactionType = FactionTypes.Hillbilly;
                     TerritoryColor = Color.Green;
-                    Headquarters = new Territories.TerritoryData(Faction, new Vector3(), TerritoryColor);
-                    //Territories.Add(Headquarters);
+                    Influence = 1.0f;
+                    Headquarters = new Territories.TerritoryData(Faction, new Vector3(2546.8f, 2610.598f, 37.94484f), TerritoryColor, Influence);
+                    Territories.Add(Headquarters);
                     break;
                 case Factions.Kkangpae:
                     FactionType = FactionTypes.Gang;
@@ -176,8 +177,9 @@
                 case Factions.Rednecks:
                     FactionType = FactionTypes.Hillbilly;
                     TerritoryColor = Color.IndianRed;
-                    Headquarters = new Territories.TerritoryData(Faction, new Vector3(), TerritoryColor);
-                    //Territories.Add(Headquarters);
+                    Influence = 3.0f;
+                    Headquarters = new Territories.TerritoryData(Faction, new Vector3(1224.049f, 2728.68f, 38.00505f), TerritoryColor, Influence);
+                    Territories.Add(Headquarters);
                     break;
                 case Factions.TheLostMC:
                     FactionType = FactionTypes.MotorCycleClub;
@@ -237,7 +239,7 @@
         // Properties
 
         /// <summary>
-        /// property <c>Faction</c> stores the faction type
+        /// property <c>Faction</c> stores the Faction enum type
         /// </summary>
         public Factions Faction { get; }
         
