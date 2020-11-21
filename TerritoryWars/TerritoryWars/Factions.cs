@@ -11,8 +11,8 @@
     /// </summary>
     public enum Factions
     {
-        [Description("Police")]
-        Police = 0,
+        [Description("Los Santos Police")]
+        LosSantosPolice = 0,
         [Description("FIB")]
         FIB = 1,
         [Description("Military")]
@@ -43,6 +43,14 @@
         TheLostMC = 14,
         [Description("Varrios Los Aztecas")]
         VarriosLosAztecas = 15,
+        [Description("National Security Enforcement")]
+        NationalSecurityEnforcement = 16,
+        [Description("Sheriff")]
+        Sheriff = 17,
+        [Description("Forrest Rangers")]
+        ForestRangers = 18,
+        [Description("Penitentiary Guards")]
+        PenitentiaryGuards = 19,
     }
 
     /// <summary>
@@ -75,9 +83,9 @@
                     break;
                 case Factions.FIB:
                     TerritoryColor = Color.Brown;
-                    Influence = 10.0f;
-                    Headquarters = new Territories.TerritoryData(Faction, new Vector3(), TerritoryColor);
-                    //Territories.Add(Headquarters);
+                    Influence = 3.0f;
+                    Headquarters = new Territories.TerritoryData(Faction, new Vector3(-429.2342f, 1109.349f, 327.682f), TerritoryColor, Influence);
+                    Territories.Add(Headquarters);
                     break;
                 case Factions.GambettiCrimeFamily:
                     TerritoryColor = Color.Maroon;
@@ -105,7 +113,7 @@
                     //Territories.Add(Headquarters);
                     break;
                 case Factions.MadrazoCartel:
-                    TerritoryColor = Color.ForestGreen;
+                    TerritoryColor = Color.PaleGreen;
                     Headquarters = new Territories.TerritoryData(Faction, new Vector3(), TerritoryColor);
                     //Territories.Add(Headquarters);
                     break;
@@ -124,14 +132,16 @@
                     Headquarters = new Territories.TerritoryData(Faction, new Vector3(), TerritoryColor);
                     //Territories.Add(Headquarters);
                     break;
-                case Factions.Police:
+                case Factions.LosSantosPolice:
                     TerritoryColor = Color.DodgerBlue;
-                    float test = 10.0f;
-                    Influence = test;
-                    Headquarters = new Territories.TerritoryData(Faction, new Vector3(451.7062f, -993.2839f, 30.6896f), TerritoryColor, test);
+                    Influence = 10.0f;
+                    Headquarters = new Territories.TerritoryData(Faction, new Vector3(451.7062f, -993.2839f, 30.6896f), TerritoryColor, Influence);
                     Territories.Add(Headquarters);
                     // Other stations
-                    Territories.Add(new Territories.TerritoryData(Faction, new Vector3(649.8077f, -8.154874f, 82.40269f), TerritoryColor, test));
+                    Territories.Add(new Territories.TerritoryData(Faction, new Vector3(649.8077f, -8.154874f, 82.40269f), TerritoryColor, Influence));
+                    Territories.Add(new Territories.TerritoryData(Faction, new Vector3(-1108.172f, -844.1479f, 19.31697f), TerritoryColor, Influence));
+                    Territories.Add(new Territories.TerritoryData(Faction, new Vector3(825.3053f, -1290.263f, 28.24065f), TerritoryColor, Influence));
+                    Territories.Add(new Territories.TerritoryData(Faction, new Vector3(-561.687f, -130.9729f, 38.43186f), TerritoryColor, Influence));
                     break;
                 case Factions.Rednecks:
                     TerritoryColor = Color.IndianRed;
@@ -148,6 +158,33 @@
                     Headquarters = new Territories.TerritoryData(Faction, new Vector3(), TerritoryColor);
                     //Territories.Add(Headquarters);
                     break;
+                case Factions.NationalSecurityEnforcement:
+                    TerritoryColor = Color.SkyBlue;
+                    Influence = 10.0f;
+                    Headquarters = new Territories.TerritoryData(Faction, new Vector3(-863.4155f, -2409.932f, 14.02572f), TerritoryColor, Influence);
+                    Territories.Add(Headquarters);
+                    break;
+                case Factions.Sheriff:
+                    TerritoryColor = Color.LimeGreen;
+                    Influence = 10.0f;
+                    Headquarters = new Territories.TerritoryData(Faction, new Vector3(360.7052f, -1583.961f, 29.29195f), TerritoryColor, Influence);
+                    Territories.Add(Headquarters);
+                    // Other stations
+                    Territories.Add(new Territories.TerritoryData(Faction, new Vector3(-448.1817f, 6007.835f, 31.71638f), TerritoryColor, Influence));
+                    Territories.Add(new Territories.TerritoryData(Faction, new Vector3(1848.665f, 3690.305f, 34.26707f), TerritoryColor, Influence));
+                    break;
+                case Factions.ForestRangers:
+                    TerritoryColor = Color.ForestGreen;
+                    Influence = 10.0f;
+                    Headquarters = new Territories.TerritoryData(Faction, new Vector3(378.9325f, 792.2542f, 190.407f), TerritoryColor, Influence);
+                    Territories.Add(Headquarters);
+                    break;
+                case Factions.PenitentiaryGuards:
+                    TerritoryColor = Color.RosyBrown;
+                    Influence = 10.0f;
+                    Headquarters = new Territories.TerritoryData(Faction, new Vector3(1845.719f, 2586.033f, 45.67205f), TerritoryColor, Influence);
+                    Territories.Add(Headquarters);
+                    break; 
                 default:
                     TerritoryColor = Color.White;
                     Headquarters = new Territories.TerritoryData(Faction, new Vector3(), TerritoryColor);

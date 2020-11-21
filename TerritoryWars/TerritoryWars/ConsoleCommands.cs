@@ -7,7 +7,9 @@
         public static void Command_Location()
         {
             Vector3 PlayerPosition = Game.LocalPlayer.Character.Position;
-            Game.DisplayNotification(PlayerPosition.ToString());
+            string Location = PlayerPosition.ToString();
+            Game.DisplayNotification(Location);
+            Game.LogTrivial(Location);
         }
 
         [Rage.Attributes.ConsoleCommand]
