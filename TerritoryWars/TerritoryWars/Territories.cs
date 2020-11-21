@@ -270,8 +270,7 @@
         /// </summary>
         public TerritoryFactory() : base()
         {
-            //TerritoriesToCreate.Add(new TerritoryData("Territory1", new Vector3(649.8077f, -8.154874f, 82.40269f), Color.Blue));
-            //TerritoriesToCreate.Add(new TerritoryData("Territory2", new Vector3(451.7062f, -993.2839f, 30.6896f), Color.Green));
+
         }
 
         // Properties
