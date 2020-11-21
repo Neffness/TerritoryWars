@@ -69,6 +69,7 @@
         {
             InitializeTerritoriesContainer();
             TerritoriesFactory = new TerritoryFactory();
+            StartNewFiber(100, Tick);
         }
 
         // --> Singleton

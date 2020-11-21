@@ -134,14 +134,6 @@ namespace TerritoryWars
                 {
                     MenuManager.Tick();
                 }
-                if (FactionsManager != null)
-                {
-                    FactionsManager.Tick();
-                }
-                if (TerritoryManager != null)
-                {
-                    TerritoryManager.Tick();
-                }
             }
         }
     }

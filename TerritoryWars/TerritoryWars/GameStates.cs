@@ -42,6 +42,7 @@
         {
             base.InitializeGame();
             InitializeFactionsManager();
+            StartNewFiber(100, Tick);
         }
 
         /// <summary>

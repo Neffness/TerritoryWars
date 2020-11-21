@@ -295,6 +295,7 @@
         {
             InitializeFactionsContainer();
             FactionsFactory = new FactionsFactory();
+            StartNewFiber(100, Tick);
         }
 
         // --> Singleton
